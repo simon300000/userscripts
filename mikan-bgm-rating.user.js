@@ -3,11 +3,10 @@
 // @description 在Mikan上显示Bangumi评分
 // @match       https://mikanani.me/
 // @match       https://mikanani.me/Home/Bangumi/*
-// @version     1.0.1
+// @version     1.0.2
 // @author      Simon
 // @license     MIT
 // @supportURL  https://github.com/simon300000/userscripts/issues
-// @updateURL https://update.greasyfork.org/scripts/552814/Mikan-bgm-rating.user.js
 // ==/UserScript==
 
 const ONE_DAY = 24 * 60 * 60 * 1000
