@@ -3,7 +3,9 @@
 // @description 在Mikan上显示Bangumi评分
 // @match       https://mikanani.me/
 // @match       https://mikanani.me/Home/Bangumi/*
-// @version     1.0.2
+// @match       https://mikan.tangbai.cc/
+// @match       https://mikan.tangbai.cc/Home/Bangumi/*
+// @version     1.0.3
 // @author      Simon
 // @license     MIT
 // @supportURL  https://github.com/simon300000/userscripts/issues
@@ -13,6 +15,16 @@ const ONE_DAY = 24 * 60 * 60 * 1000
 const ONE_MONTH = 30 * ONE_DAY
 
 const wait = ms => new Promise(res => setTimeout(res, ms))
+
+// 配置Mikan的主页和番组页面URL
+const HOMEPAGES = [
+  'https://mikanani.me/',
+  'https://mikan.tangbai.cc/'
+]
+const BANGUMI_PAGES = [
+  'https://mikanani.me/Home/Bangumi/',
+  'https://mikan.tangbai.cc/Home/Bangumi/'
+]
 
 const accessCurrentCache = (key, param) => {
   const cacheKey = `mikan-cache-${key}-${param}`
@@ -85,14 +97,14 @@ const showBGMRating = async (span, id) => {
   return hit
 }
 
-const showRatings = async () => {
+const showRatings = async hostname => {
   const divs = document.getElementsByClassName('an-info-group')
 
   const pending = []
 
   for (let i = 0; i < divs.length; i++) {
     const div = divs[i]
-    const a = [...div.children].filter(e => e.tagName === 'A' && e.href.includes('mikanani.me'))[0]
+    const a = [...div.children].filter(e => e.tagName === 'A' && e.href.includes(hostname))[0]
     if (a) {
 
       const span = document.createElement('span')
@@ -156,11 +168,14 @@ const showRating = async () => {
   }
 }
 
-if (location.href === 'https://mikanani.me/') {
-  showRatings()
+console.log('Mikan-bgm-rating script loaded')
+console.log('Current URL:', location.href)
+
+if (HOMEPAGES.includes(location.href)) {
+  showRatings(location.hostname)
 }
 
-if (location.href.startsWith('https://mikanani.me/Home/Bangumi/')) {
+if (BANGUMI_PAGES.some(prefix => location.href.startsWith(prefix))) {
   showRating()
 }
 
