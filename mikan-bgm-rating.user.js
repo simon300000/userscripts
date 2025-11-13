@@ -68,11 +68,18 @@ const getBGMRating = async id => {
   }
 }
 
+const getColorForScore = score => {
+  if (score > 7.5) return '#e74c3c' // red
+  if (score < 6) return '#95a5a6' // gray
+  return '#f39c12' // orange
+}
+
 const showBGMRating = async (span, id) => {
   const rating = await accessCache('bgm-rating', id, getBGMRating, ONE_DAY)
   const { value: score, hit } = rating
   console.log('bgm id', id, 'rating', score, 'cache hit:', hit)
   if (score) {
+    span.style.color = getColorForScore(score)
     span.innerText = `Bangumi评分: ${score}`
   }
   return hit
@@ -111,6 +118,7 @@ const showRatings = async () => {
     if (id) {
       const currentRating = accessCurrentCache('bgm-rating', id)
       if (currentRating) {
+        span.style.color = getColorForScore(currentRating)
         span.innerText = `Bangumi评分: ${currentRating}...`
       }
       if (hit) {
@@ -143,6 +151,7 @@ const showRating = async () => {
   const { value: score, hit } = await accessCache('bgm-rating', id, getBGMRating, ONE_DAY)
   console.log('bgm id', id, 'rating', score, 'cache hit:', hit)
   if (score) {
+    span.style.color = getColorForScore(score)
     span.innerText = `Bangumi评分: ${score}`
   }
 }
